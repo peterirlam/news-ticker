@@ -1,0 +1,29 @@
+<!-- Check Browser -->
+var ua = HtmlService.getUserAgent();
+ if ((ua.indexOf("Edge")<0) && (ua.indexOf("MSIE")<0))
+
+<?!= include('style'); ?>
+<div id="outer">
+   <div id ="tick" style="margin-top:7px;">
+     <li><a style="color:#f8ba6c;" href="#">Latest Information:</a></li>
+<? var sheet = SpreadsheetApp.openByUrl("https://docs.google.com/spreadsheets/d/1vGVU9kMCmx5LEaBsQ_NL1ygdj1qzVW41LWl4A_Of7Y4/edit?usp=sharing").getSheetByName("external") ?>
+<? var values = sheet.getRange(2, 1, 19,4).getValues() ?>
+<? var expirydate; ?>
+<? var firstcol; ?>
+<? var today = new Date(); ?>
+<? var result; ?>
+
+<? for (i=0; i < values.length ; i++) {
+    //sheet.getRange(i + 2 ,5).setValue("");
+     if (values[i][0]) { /* Check if item */
+    expirydate = DateDiffInDays(today, new Date(sheet.getRange(i + 2 ,4).getValue()))
+     if (expirydate >= 0 ) {
+     if (!values[i][1]) { /* Check if URL */ ?>
+     <li><span><?= values[i][0] ?></span></li>
+     <? } else { ?>
+       <li><a href='<?= values[i][1] ?>' target='_blank'><?= values[i][0] ?></a></li>
+         <? }  /*End if URL */ }  /* End check expiry */ } /*End if item */ } /*End for */ ?>
+   </div>
+ </div>
+<?!= include('script'); ?>
+<!-- End check Browser -->
