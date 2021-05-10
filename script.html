@@ -1,0 +1,62 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+
+// Opera 8.0+
+var isOpera = (!!window.opr && !!opr.addons) || !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+
+// Firefox 1.0+
+var isFirefox = typeof InstallTrigger !== 'undefined';
+
+// Safari 3.0+ "[object HTMLElementConstructor]"
+var isSafari = /constructor/i.test(window.HTMLElement) || (function (p) { return p.toString() === "[object SafariRemoteNotification]"; })(!window['safari'] || (typeof safari !== 'undefined' && safari.pushNotification));
+
+// Internet Explorer 6-11
+var isIE = /*@cc_on!@*/false || !!document.documentMode;
+
+// Edge 20+
+var isEdge = !isIE && !!window.StyleMedia;
+
+// Chrome 1 - 79
+var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+// Edge (based on chromium) detection
+var isEdgeChromium = isChrome && (navigator.userAgent.indexOf("Edg") != -1);
+
+// Blink engine detection
+var isBlink = (isChrome || isOpera) && !!window.CSS;
+
+var temp=0,intervalId=0,interval=10 ;
+ if (isFirefox) {
+  interval = 8;
+  } else if (isChrome) {
+  interval = 10;
+  } else if (isEdgeChromium) {
+  interval = 8;
+  } else if (isEdge) {
+ }
+ $('#tick li').each(function(){
+  var offset=$(this).offset();
+  var offsetLeft=offset.left;
+  $(this).css({'left':offsetLeft+temp});
+  temp=$(this).width()+temp+60;
+});
+$('#tick').css({'width':temp+120, 'margin-left':'500px'});
+temp=1150;
+
+function abc(a) {
+    var marginLefta=(parseInt($("#"+a).css('marginLeft')));
+    if((-marginLefta<=$("#"+a).width())&&(-marginLefta<=$("#"+a).width())){
+        $("#"+a).css({'margin-left':(marginLefta-1)+'px'});
+    } else {
+        $("#"+a).css({'margin-left':temp});
+    }
+}
+
+function start() { intervalId = window.setInterval(function() { abc('tick'); }, interval) }
+
+$(function(){
+    $('#outer').mouseenter(function() { window.clearInterval(intervalId); });
+    $('#outer').mouseleave(function() { start(); })
+      start();
+  });
+</script>
